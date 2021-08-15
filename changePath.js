@@ -10,7 +10,7 @@ var fs = require("fs").promises;
 var srcPath = /media\/paytable/;
 var replacementPath = "paytable/";
 var imageExtensions = [".jpg", ".png"];
-var targetFileExtensions = [".hmtl", ".js", ".txt"];
+var targetFileExtensions = [".html", ".js", ".txt"];
 var targetFiles = [];
 var currentFile;
 var fileIndex = 0;
@@ -72,9 +72,6 @@ function handleNextFile(){
         if(fileIndex < targetFiles.length){
             currentFile = targetFiles[fileIndex];
             console.log("moving on to next file: " + currentFile);
-            console.log();
-            console.log("--------------------");
-            console.log();
             scanFile();
         }
         else{
@@ -121,7 +118,7 @@ async function handleFolder(folderName){
             }
             var fullPath = e.split(fileName)[0];
             for(var j = 0; j < targetFileExtensions.length; j++){
-                var isTopLevel = (fullPath == arg1);
+                var isTopLevel = (fullPath === arg1) || (fullPath === arg1 + "/");
                 if( ("."+ext) === targetFileExtensions[j] && !isExcluded && isTopLevel){
                     targetFiles.push(e);
                     console.log("added file to be handled: " + e);
@@ -129,9 +126,14 @@ async function handleFolder(folderName){
             }
         }
     }
-    console.log("\n");
-    currentFile = targetFiles[0];
-    scanFile()
+    if(targetFiles.length != 0){
+        currentFile = targetFiles[0];
+        scanFile()
+    }
+    else{
+        console.log("No files within the search parameters were found, nothing will be changed");
+        console.log("Exiting");
+    }
 }
 
 init(arg1);

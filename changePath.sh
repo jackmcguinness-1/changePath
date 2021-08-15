@@ -18,6 +18,7 @@ elif [ "$1" == "--help" ]; then
     echo "the script can run on a single file, on a folder, or recursively on a folder meaning it will check all sub directories"
     echo "to run on a file or folder just run ./changePath.sh x"
     echo "to run it recursively on a folder include an -r flag"
+    echo "check the globals in changePath.js for ways to change the behaviour of the script"
 else
     if test -e $1; then
         touch treeFile.txt
